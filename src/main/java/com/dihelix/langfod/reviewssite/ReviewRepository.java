@@ -12,11 +12,8 @@ public class ReviewRepository {
 
 	Map<Long, Review> reviews = new HashMap<>();
 
-	public ReviewRepository() {
-	}
-
 	public ReviewRepository(Collection<Review> listOfReviews) {
-		addReviews(listOfReviews);
+		if (listOfReviews != null) addReviews(listOfReviews);
 	}
 
 	void addReview(Review review) {

@@ -29,7 +29,7 @@ public class ReviewRepositoryTest {
 
 	@Before
 	public void setUp() {
-		underTest = new ReviewRepository();
+		underTest = new ReviewRepository(null);
 		testReview = new Review(testId, testTitle, testCategory, testContent, testBookPublishedDate, testDescription,
 				testImageUrl, testTags);
 		testReviewList = new SampleReviewFactory().sampleReviewList();
