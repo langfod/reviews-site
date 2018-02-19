@@ -1,0 +1,62 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<link  rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}" />
+	<title th:text="'A List of Reviews' + (${selectedTag != null}?' by Tag':'')">Title</title>
+</head>
+
+<body>
+
+	
+<main id="top">
+  <header>
+	<h1	th:text="'A Listing of Fake Review Like Items' + (${selectedTag != null}?' by Tag':'') ">Heading</h1>
+  </header>
+  <nav>  
+	<ul>
+  		<li><a class="active" href="/reviews">Home</a></li>
+  	<li th:each="review: ${reviews}"><a th:href="${'#' + review.title}" th:text="${review.title}">Review Link</a></li>
+ 	</ul>
+ 	<a style="margin-top: auto;" href="#top" class="button"><strong>Back to Top</strong></a>
+  </nav>
+
+ <section>
+    
+	<article th:each="review: ${reviews}" th:id="${review.title}">
+
+		<figure th:fragment="article-img">
+			<img  th:src="${review.imageUrl}" alt="" />
+		</figure>
+		
+		<header th:fragment="article-header" th:inline="text">
+			<h2>
+			<a th:text="${review.title}" th:href="@{/review(id=${review.id})}" th:remove="!${#strings.isEmpty(id)}?tag">Review Title</a>	
+			</h2>
+			Published: [[${#temporals.format(review.bookPublishedDate, 'MMMM dd ,YYYY')}]]
+		</header>
+		
+		<section th:text="${review.description}">Amazing Description</section>
+
+		<footer th:fragment="article-footer" th:inline="text">
+			<th:block th:each="reviewtag, iterStat: ${review.tags}"	th:unless="${#lists.isEmpty(review.tags)}">
+				<a th:href="@{/reviews(reviewtag=${reviewtag})}" th:remove="${reviewtag}==${selectedTag}?tag">
+				<th:block th:text="${reviewtag}"></th:block></a>[[${not iterStat.last}?', ':'']]
+			</th:block>
+		</footer>
+		
+	</article>
+  </section>
+</main>
+	<footer th:fragment="page-footer" th:inline="text">
+		
+			Tags: <th:block th:each="reviewtag, iterStat: ${tagList}" th:unless="${#lists.isEmpty(tagList)}">
+				<a th:href="@{/reviews(reviewtag=${reviewtag})}" th:remove="${reviewtag}==${selectedTag}?tag">
+				<th:block	th:text="${reviewtag}"></th:block></a>[[${not iterStat.last}?', ':'']]</th:block>
+		<nav>
+			<a href="/reviews">Back to home</a>
+		</nav>
+	</footer>
+</body>
+</html>
